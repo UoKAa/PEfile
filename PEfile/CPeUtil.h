@@ -10,6 +10,7 @@ public:
 	BOOL LoadFile(const char* patch);
 	BOOL InitPeInfo();
 	void PrintSectionHeaders();
+	void GetExportTable();
 private:
 	char* FileBuff;
 	DWORD FileSize;
@@ -18,4 +19,6 @@ private:
 	PIMAGE_FILE_HEADER pFileHeader;
 	PIMAGE_OPTIONAL_HEADER pOptionHeader;
 	//PIMAGE_SECTION_HEADER pSectionHeader;
+	DWORD RvaToFoa(DWORD rva);
+	
 };

@@ -4,10 +4,11 @@
 int main()
 {
 	CPeUtil peUtil;
-	BOOL ifSuccess = peUtil.LoadFile("D://Software//Game//M01//dbghelp.dll");
+	BOOL ifSuccess = peUtil.LoadFile("D://Software//Game//M01//KartRecovery.exe");
 	if (ifSuccess)
 	{
 		peUtil.PrintSectionHeaders();
+		peUtil.GetExportTable();
 		return 0;
 	}
 	else

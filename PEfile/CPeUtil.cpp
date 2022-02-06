@@ -74,3 +74,46 @@ void CPeUtil::PrintSectionHeaders()
 		pSectionHeaders++;
 	}
 }
+
+//解析导出表
+void CPeUtil::GetExportTable()
+{
+	IMAGE_DATA_DIRECTORY directory = pOptionHeader->DataDirectory[0];
+	PIMAGE_EXPORT_DIRECTORY pexport = (PIMAGE_EXPORT_DIRECTORY)(RvaToFoa(directory.VirtualAddress) + FileBuff);
+	char* dllName = RvaToFoa(pexport->Name) + FileBuff;
+	printf("文件名称：%s\n", dllName);
+	DWORD* funaddr = (DWORD*)(RvaToFoa(pexport->AddressOfFunctions) + FileBuff);
+	WORD* peot = (WORD*)(RvaToFoa(pexport->AddressOfNameOrdinals) + FileBuff);
+	DWORD* pent = (DWORD*)(RvaToFoa(pexport->AddressOfNames) + FileBuff);
+	for (int i = 0; i < pexport->NumberOfFunctions; i++)
+	{
+		printf("函数地址为：%x\t", *funaddr);
+		for (int j = 0; j < pexport->NumberOfNames; j++)
+		{
+			if (peot[j] == i)
+			{
+				char* funName = RvaToFoa(pent[j]) + FileBuff;
+				printf("函数名称为：%s\n", funName);
+				break;
+			}
+		}
+		funaddr++;
+	}
+}
+
+//Rva转Foa
+DWORD CPeUtil::RvaToFoa(DWORD rva)
+{
+	//数据的FOA = 数据的RVA-区段的RVA+区段的FOA
+	PIMAGE_SECTION_HEADER pSectionHeaders = IMAGE_FIRST_SECTION(pNtHeader);
+
+	for (int i = 0; i < pFileHeader->NumberOfSections; i++)
+	{
+		if ((rva >= pSectionHeaders->VirtualAddress) && (rva < pSectionHeaders->VirtualAddress + pSectionHeaders->Misc.PhysicalAddress))
+		{
+			return rva - pSectionHeaders->VirtualAddress + pSectionHeaders->PointerToRawData;
+		}
+		pSectionHeaders++;
+	}
+	return 0;
+}
