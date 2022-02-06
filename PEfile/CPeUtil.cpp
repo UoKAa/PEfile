@@ -65,7 +65,7 @@ BOOL CPeUtil::InitPeInfo()
 void CPeUtil::PrintSectionHeaders()
 {
 	PIMAGE_SECTION_HEADER pSectionHeaders = IMAGE_FIRST_SECTION(pNtHeader);
-	
+
 	for (int i = 0; i < pFileHeader->NumberOfSections; i++)
 	{
 		char name[9]{ 0 };
