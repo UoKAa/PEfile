@@ -87,13 +87,13 @@ void CPeUtil::GetExportTable()
 	DWORD* pent = (DWORD*)(RvaToFoa(pexport->AddressOfNames) + FileBuff);
 	for (int i = 0; i < pexport->NumberOfFunctions; i++)
 	{
-		printf("函数地址为：%x\t", *funaddr);
+		printf("函数地址：%x\t", *funaddr);
 		for (int j = 0; j < pexport->NumberOfNames; j++)
 		{
 			if (peot[j] == i)
 			{
 				char* funName = RvaToFoa(pent[j]) + FileBuff;
-				printf("函数名称为：%s\n", funName);
+				printf("函数名称：%s\n", funName);
 				break;
 			}
 		}

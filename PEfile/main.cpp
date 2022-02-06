@@ -4,7 +4,7 @@
 int main()
 {
 	CPeUtil peUtil;
-	BOOL ifSuccess = peUtil.LoadFile("D://Software//Game//M01//KartRecovery.exe");
+	BOOL ifSuccess = peUtil.LoadFile("D://Software//Game//M01//CrashReporter.dll");
 	if (ifSuccess)
 	{
 		peUtil.PrintSectionHeaders();
