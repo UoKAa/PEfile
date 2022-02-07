@@ -101,6 +101,36 @@ void CPeUtil::GetExportTable()
 	}
 }
 
+void CPeUtil::GetImportTable()
+{
+	IMAGE_DATA_DIRECTORY directory = pOptionHeader->DataDirectory[1];
+	//导入表地址
+	PIMAGE_IMPORT_DESCRIPTOR pImport = (PIMAGE_IMPORT_DESCRIPTOR)(RvaToFoa(directory.VirtualAddress) + FileBuff);
+	while (pImport->OriginalFirstThunk)
+	{
+		char* dllName = RvaToFoa(pImport->Name) + FileBuff;
+		printf("DLL文件名称：%s\n", dllName);
+		printf("TimeDataStamp = %d\n", pImport->TimeDateStamp);
+		PIMAGE_THUNK_DATA pThukData = (PIMAGE_THUNK_DATA)(RvaToFoa(pImport->OriginalFirstThunk) + FileBuff);
+		while (pThukData->u1.Function)
+		{
+			//判断是否是按序号导入
+			if (pThukData->u1.Ordinal & 0x80000000)
+			{
+				printf("按序号导入：%d\n", pThukData->u1.Ordinal & 0x7FFFFFFF);
+			}
+			else
+			{
+				PIMAGE_IMPORT_BY_NAME importName = (PIMAGE_IMPORT_BY_NAME)(RvaToFoa(pThukData->u1.AddressOfData) + FileBuff);
+				printf("按名称导入：%s\n", importName->Name);
+			}
+			pThukData++;
+		}
+		printf("\n");
+		pImport++;
+	}
+}
+
 //Rva转Foa
 DWORD CPeUtil::RvaToFoa(DWORD rva)
 {
