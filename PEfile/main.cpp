@@ -16,6 +16,6 @@ int main()
 	{
 		printf("¼ÓÔØPEÎÄ¼şÊ§°Ü£¡\n");
 	}
-	
+
 	return 0;
 }

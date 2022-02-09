@@ -22,7 +22,7 @@ CPeUtil::~CPeUtil()
 BOOL CPeUtil::LoadFile(const char* patch)
 {
 	HANDLE hFile = CreateFileA(patch, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	if (hFile==0)
+	if (hFile == 0)
 	{
 		return FALSE;
 	}
@@ -30,7 +30,7 @@ BOOL CPeUtil::LoadFile(const char* patch)
 	FileBuff = new char[FileSize] {0};
 	DWORD realReadBytes = 0;
 	BOOL readSuccess = ReadFile(hFile, FileBuff, FileSize, &realReadBytes, 0);
-	if (readSuccess==0)
+	if (readSuccess == 0)
 	{
 		return FALSE;
 	}
@@ -45,7 +45,7 @@ BOOL CPeUtil::LoadFile(const char* patch)
 BOOL CPeUtil::InitPeInfo()
 {
 	pDosHeader = (PIMAGE_DOS_HEADER)FileBuff;
-	if (pDosHeader->e_magic!=IMAGE_DOS_SIGNATURE)
+	if (pDosHeader->e_magic != IMAGE_DOS_SIGNATURE)
 	{
 		printf("不是PE文件！\n");
 		return FALSE;

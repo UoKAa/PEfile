@@ -21,5 +21,5 @@ private:
 	PIMAGE_OPTIONAL_HEADER pOptionHeader;
 	//PIMAGE_SECTION_HEADER pSectionHeader;
 	DWORD RvaToFoa(DWORD rva);
-	
+
 };
